@@ -116,9 +116,10 @@ to the '-s' parameter of dwl-guile.")
           #:pid-file #$(string-append (or (getenv "XDG_RUNTIME_DIR")
                                           (format #f "/run/user/~a" (getuid)))
                                       "/dwl-guile.pid")
-          #:log-file #$(string-append (or (getenv "XDG_LOG_HOME")
-                                          (getenv "HOME"))
-                                      "/dwl-guile.log"))))
+          #:log-file #$(format #f "~a/log/dwl-guile.log"
+                           (or (getenv "XDG_STATE_HOME")
+                               (format #f "~a/.local/state"
+                                       (getenv "HOME")))))))
     (stop #~(make-kill-destructor)))))
 
 (define (home-dwl-guile-on-change-service config)
